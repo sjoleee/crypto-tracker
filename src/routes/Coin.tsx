@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Chart from "./Chart";
+import Price from "./Price";
 
 const DivisionLine = styled.div`
   background-color: #ffffff5a;
   width: 50px;
   height: 1px;
+  margin-bottom: 3px;
 `;
 
 const Container = styled.div`
@@ -54,8 +57,8 @@ const OverviewItem = styled.div`
   }
   span: last-child {
     font-size: 30px;
-    margin
-  }
+    margin-bottom: 3px;
+  } ;
 `;
 
 const Description = styled.p`
@@ -175,6 +178,10 @@ function Coin() {
           {info?.description ? (
             <Description>{info?.description}</Description>
           ) : null}
+          <Routes>
+            <Route path={`price`} element={<Price />}></Route>
+            <Route path={`chart`} element={<Chart />}></Route>
+          </Routes>
         </>
       )}
     </Container>
