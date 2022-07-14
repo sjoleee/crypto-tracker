@@ -1,9 +1,41 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
+
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useMatch,
+  useParams,
+} from "react-router-dom";
 import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
+
+const Tab = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  height: 40px;
+  background-color: ${(props) => (props.isActive ? "#ffffffe8" : "#00000050")};
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  a {
+    display: block;
+    width: 100%;
+  }
+`;
+const TabWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+`;
 
 const DivisionLine = styled.div`
   background-color: #ffffff5a;
@@ -62,8 +94,8 @@ const OverviewItem = styled.div`
 `;
 
 const Description = styled.p`
-  margin-top: 30px;
-  border-radius: 10px;
+  margin: 20px 0px;
+  border-radius: 15px;
   background-color: #00000050;
   padding: 20px;
 `;
@@ -133,7 +165,9 @@ function Coin() {
   const { state } = useLocation() as LocationParams;
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<PriceData>();
-
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
+  console.log(priceMatch);
   useEffect(() => {
     (async () => {
       const infoData = await (
@@ -178,6 +212,14 @@ function Coin() {
           {info?.description ? (
             <Description>{info?.description}</Description>
           ) : null}
+          <TabWrapper>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>Chart</Link>
+            </Tab>
+          </TabWrapper>
           <Routes>
             <Route path={`price`} element={<Price />}></Route>
             <Route path={`chart`} element={<Chart />}></Route>
