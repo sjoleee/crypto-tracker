@@ -3,6 +3,12 @@ import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+const DivisionLine = styled.div`
+  background-color: #ffffff5a;
+  width: 50px;
+  height: 1px;
+`;
+
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
@@ -14,6 +20,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 15px 0px;
 `;
 
 const Title = styled.h1`
@@ -24,6 +31,38 @@ const Title = styled.h1`
 const Loader = styled.span`
   text-align: center;
   display: block;
+`;
+
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const OverviewItem = styled.div`
+  border-radius: 15px;
+  background-color: #6c5ce750;
+  display: flex;
+  width: 120px;
+  height: 120px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  span: first-child {
+    font-size: 15px;
+    margin-top: 8px;
+  }
+  span: last-child {
+    font-size: 30px;
+    margin
+  }
+`;
+
+const Description = styled.p`
+  margin-top: 30px;
+  border-radius: 10px;
+  background-color: #00000050;
+  padding: 20px;
 `;
 
 interface LocationParams {
@@ -102,19 +141,41 @@ function Coin() {
       ).json();
       setInfo(infoData);
       setPriceInfo(priceData);
+      setLoading(false);
     })();
-  }, []);
+  }, [coinId]);
 
   return (
     <Container>
       <Header>
-        <Title>{state ?? "Loading"}</Title>
+        <Title>{state ? state : loading ? "Loading..." : info?.name}</Title>
       </Header>
 
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <span>{priceInfo?.quotes.USD.price}</span>
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>Rank</span>
+              <DivisionLine />
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol</span>
+              <DivisionLine />
+              <span>{info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>OpenSource</span>
+              <DivisionLine />
+              <span>{info?.open_source ? "YES" : "NO"}</span>
+            </OverviewItem>
+          </Overview>
+          {info?.description ? (
+            <Description>{info?.description}</Description>
+          ) : null}
+        </>
       )}
     </Container>
   );
