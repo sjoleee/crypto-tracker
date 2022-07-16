@@ -172,8 +172,8 @@ interface PriceData {
 function Coin() {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationParams;
-  const priceMatch = useMatch("/:coinId/price");
-  const chartMatch = useMatch("/:coinId/chart");
+  const priceMatch = useMatch("/crypto-tracker/:coinId/price");
+  const chartMatch = useMatch("/crypto-tracker/:coinId/chart");
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
