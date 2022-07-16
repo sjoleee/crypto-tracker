@@ -50,5 +50,6 @@
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.25"
-  }
+  },
+  "homepage": "https://sjoleee.github.io/crypto-tracker/"
 }
