@@ -235,10 +235,10 @@ function Coin() {
             ) : null}
             <TabWrapper>
               <Tab isActive={priceMatch !== null}>
-                <Link to={`/${coinId}/price`}>Price</Link>
+                <Link to={`/crypto-tracker/${coinId}/price`}>Price</Link>
               </Tab>
               <Tab isActive={chartMatch !== null}>
-                <Link to={`/${coinId}/chart`}>Chart</Link>
+                <Link to={`/crypto-tracker/${coinId}/chart`}>Chart</Link>
               </Tab>
             </TabWrapper>
             <Routes>
