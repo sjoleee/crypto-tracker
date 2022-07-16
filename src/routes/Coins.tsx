@@ -100,7 +100,7 @@ function Coins() {
                   <Img
                     src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                   ></Img>
-                  {coin.name} &rarr;
+                  {coin.name}
                 </Link>
               </Coin>
             ))}
