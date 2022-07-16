@@ -4,6 +4,8 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { Helmet } from "react-helmet";
+import BackBtn from "../components/BackBtn";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -12,10 +14,12 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 15px 0px;
 `;
 
 const CoinList = styled.ul``;
@@ -43,9 +47,13 @@ const Title = styled.h1`
   font-size: 48px;
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
+const Loading = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 200px;
+  align-items: center;
+  font-size: 50px;
 `;
 
 const Img = styled.img`
@@ -68,32 +76,38 @@ function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   return (
-    <Container>
-      <Header>
-        <Title>코인</Title>
-      </Header>
-      {isLoading ? (
-        <Loader>Loading...</Loader>
-      ) : (
-        <CoinList>
-          {data?.slice(0, 100).map((coin) => (
-            <Coin key={coin.id}>
-              <Link
-                to={{
-                  pathname: `/${coin.id}`,
-                }}
-                state={coin.name}
-              >
-                <Img
-                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
-                ></Img>
-                {coin.name} &rarr;
-              </Link>
-            </Coin>
-          ))}
-        </CoinList>
-      )}
-    </Container>
+    <>
+      <Container>
+        <Helmet>
+          <title>코인</title>
+        </Helmet>
+        <Header>
+          <BackBtn />
+          <Title>코인</Title>
+        </Header>
+        {isLoading ? (
+          <Loading>Loading...</Loading>
+        ) : (
+          <CoinList>
+            {data?.slice(0, 100).map((coin) => (
+              <Coin key={coin.id}>
+                <Link
+                  to={{
+                    pathname: `/${coin.id}`,
+                  }}
+                  state={coin.name}
+                >
+                  <Img
+                    src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                  ></Img>
+                  {coin.name} &rarr;
+                </Link>
+              </Coin>
+            ))}
+          </CoinList>
+        )}
+      </Container>
+    </>
   );
 }
 

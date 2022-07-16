@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
+import BackBtn from "../components/BackBtn";
 
 import {
   Link,
@@ -52,6 +54,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 10vh;
   display: flex;
   justify-content: center;
@@ -64,9 +67,13 @@ const Title = styled.h1`
   font-size: 48px;
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
+const Loading = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 200px;
+  align-items: center;
+  font-size: 50px;
 `;
 
 const Overview = styled.div<{ bgColor: string }>`
@@ -181,60 +188,70 @@ function Coin() {
   const loading = infoLoading || priceLoading;
 
   return (
-    <Container>
-      <Header>
-        <Title>{state ? state : loading ? "Loading..." : infoData?.name}</Title>
-      </Header>
+    <>
+      <Container>
+        <Helmet>
+          <title>
+            {state ? state : loading ? "Loading..." : infoData?.name}
+          </title>
+        </Helmet>
+        <Header>
+          <BackBtn />
+          <Title>
+            {state ? state : loading ? "Loading..." : infoData?.name}
+          </Title>
+        </Header>
 
-      {loading ? (
-        <Loader>Loading...</Loader>
-      ) : (
-        <>
-          <Overview bgColor="#00000050">
-            <OverviewItem>
-              <span>Rank</span>
-              <DivisionLine />
-              <span>{infoData?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol</span>
-              <DivisionLine />
-              <span>{infoData?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>OpenSource</span>
-              <DivisionLine />
-              <span>{infoData?.open_source ? "YES" : "NO"}</span>
-            </OverviewItem>
-          </Overview>
-          <Overview bgColor="#00cecb7d">
-            <OverviewItem>
-              <span>RealTime Price</span>
-              <DivisionLine />
-              <span>{`$${priceData?.quotes.USD.price.toFixed(3)}`}</span>
-            </OverviewItem>
-          </Overview>
-          {infoData?.description ? (
-            <Description>{infoData?.description}</Description>
-          ) : null}
-          <TabWrapper>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </Tab>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
-          </TabWrapper>
-          <Routes>
-            <Route path={`price`} element={<Price />}></Route>
-            <Route
-              path={`chart`}
-              element={<Chart coinId={coinId} name={infoData?.name} />}
-            ></Route>
-          </Routes>
-        </>
-      )}
-    </Container>
+        {loading ? (
+          <Loading>Loading...</Loading>
+        ) : (
+          <>
+            <Overview bgColor="#00000050">
+              <OverviewItem>
+                <span>Rank</span>
+                <DivisionLine />
+                <span>{infoData?.rank}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Symbol</span>
+                <DivisionLine />
+                <span>{infoData?.symbol}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>OpenSource</span>
+                <DivisionLine />
+                <span>{infoData?.open_source ? "YES" : "NO"}</span>
+              </OverviewItem>
+            </Overview>
+            <Overview bgColor="#00cecb7d">
+              <OverviewItem>
+                <span>RealTime Price</span>
+                <DivisionLine />
+                <span>{`$${priceData?.quotes.USD.price.toFixed(3)}`}</span>
+              </OverviewItem>
+            </Overview>
+            {infoData?.description ? (
+              <Description>{infoData?.description}</Description>
+            ) : null}
+            <TabWrapper>
+              <Tab isActive={priceMatch !== null}>
+                <Link to={`/${coinId}/price`}>Price</Link>
+              </Tab>
+              <Tab isActive={chartMatch !== null}>
+                <Link to={`/${coinId}/chart`}>Chart</Link>
+              </Tab>
+            </TabWrapper>
+            <Routes>
+              <Route path={`price`} element={<Price />}></Route>
+              <Route
+                path={`chart`}
+                element={<Chart coinId={coinId} name={infoData?.name} />}
+              ></Route>
+            </Routes>
+          </>
+        )}
+      </Container>
+    </>
   );
 }
 

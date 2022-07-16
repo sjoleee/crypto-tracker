@@ -32,6 +32,15 @@ const Oops = styled.span`
   }
 `;
 
+const Loading = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 200px;
+  align-items: center;
+  font-size: 50px;
+`;
+
 function Chart({ coinId, name }: ChartProps) {
   const { isLoading, data, isError, error } = useQuery<HistoryData[]>(
     ["history", coinId],
@@ -44,7 +53,7 @@ function Chart({ coinId, name }: ChartProps) {
   return (
     <div>
       {isLoading ? (
-        "Loading..."
+        <Loading>Loading...</Loading>
       ) : data?.hasOwnProperty("error") ? (
         <Oops>
           Oops!<span>sorry, there is no price information. </span>
