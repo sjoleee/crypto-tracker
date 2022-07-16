@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { useQuery } from "react-query";
 
 import {
   Link,
@@ -10,6 +11,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -160,32 +162,26 @@ interface PriceData {
 }
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
   const { coinId } = useParams();
   const { state } = useLocation() as LocationParams;
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
-  console.log(priceMatch);
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false);
-    })();
-  }, [coinId]);
+
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId)
+  );
+
+  const { isLoading: priceLoading, data: priceData } = useQuery<PriceData>(
+    ["info", coinId],
+    () => fetchCoinPrice(coinId)
+  );
+  const loading = infoLoading || priceLoading;
 
   return (
     <Container>
       <Header>
-        <Title>{state ? state : loading ? "Loading..." : info?.name}</Title>
+        <Title>{state ? state : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
 
       {loading ? (
@@ -196,21 +192,21 @@ function Coin() {
             <OverviewItem>
               <span>Rank</span>
               <DivisionLine />
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol</span>
               <DivisionLine />
-              <span>{info?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>OpenSource</span>
               <DivisionLine />
-              <span>{info?.open_source ? "YES" : "NO"}</span>
+              <span>{infoData?.open_source ? "YES" : "NO"}</span>
             </OverviewItem>
           </Overview>
-          {info?.description ? (
-            <Description>{info?.description}</Description>
+          {infoData?.description ? (
+            <Description>{infoData?.description}</Description>
           ) : null}
           <TabWrapper>
             <Tab isActive={priceMatch !== null}>
