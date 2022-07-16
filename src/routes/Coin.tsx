@@ -18,8 +18,7 @@ import Price from "./Price";
 const Tab = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 40px;
-  background-color: ${(props) => (props.isActive ? "#ffffffe8" : "#00000050")};
-
+  background-color: ${(props) => (props.isActive ? "#0000001d" : "#00000050")};
   text-align: center;
   display: flex;
   justify-content: center;
@@ -70,17 +69,19 @@ const Loader = styled.span`
   display: block;
 `;
 
-const Overview = styled.div`
+const Overview = styled.div<{ bgColor: string }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  border-radius: 15px;
+  background-color: ${(props) => props.bgColor};
+  margin-bottom: 30px;
 `;
 
 const OverviewItem = styled.div`
-  border-radius: 15px;
-  background-color: #6c5ce750;
+  margin: 0px 10px;
   display: flex;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 100px;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -90,7 +91,7 @@ const OverviewItem = styled.div`
     margin-top: 8px;
   }
   span: last-child {
-    font-size: 30px;
+    font-size: 25px;
     margin-bottom: 3px;
   } ;
 `;
@@ -173,8 +174,9 @@ function Coin() {
   );
 
   const { isLoading: priceLoading, data: priceData } = useQuery<PriceData>(
-    ["info", coinId],
-    () => fetchCoinPrice(coinId)
+    ["price", coinId],
+    () => fetchCoinPrice(coinId),
+    { refetchInterval: 5000 }
   );
   const loading = infoLoading || priceLoading;
 
@@ -188,7 +190,7 @@ function Coin() {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Overview>
+          <Overview bgColor="#00000050">
             <OverviewItem>
               <span>Rank</span>
               <DivisionLine />
@@ -205,6 +207,13 @@ function Coin() {
               <span>{infoData?.open_source ? "YES" : "NO"}</span>
             </OverviewItem>
           </Overview>
+          <Overview bgColor="#00cecb7d">
+            <OverviewItem>
+              <span>RealTime Price</span>
+              <DivisionLine />
+              <span>{`$${priceData?.quotes.USD.price.toFixed(3)}`}</span>
+            </OverviewItem>
+          </Overview>
           {infoData?.description ? (
             <Description>{infoData?.description}</Description>
           ) : null}
@@ -218,7 +227,10 @@ function Coin() {
           </TabWrapper>
           <Routes>
             <Route path={`price`} element={<Price />}></Route>
-            <Route path={`chart`} element={<Chart coinId={coinId} />}></Route>
+            <Route
+              path={`chart`}
+              element={<Chart coinId={coinId} name={infoData?.name} />}
+            ></Route>
           </Routes>
         </>
       )}
