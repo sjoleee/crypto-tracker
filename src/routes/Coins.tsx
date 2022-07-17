@@ -46,8 +46,11 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   color: ${(props) => props.theme.accentColor};
-  font-size: 48px;
+  font-size: 10vw;
 `;
 
 const Loading = styled.span`
@@ -88,7 +91,7 @@ function Coins({}: ICoinsProps) {
           <title>코인</title>
         </Helmet>
         <Header>
-          <BackBtn />
+          <div></div>
           <Title>코인</Title>
           <ToggleBtn />
         </Header>

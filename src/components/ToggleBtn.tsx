@@ -6,7 +6,7 @@ const ToggleWrapper = styled.div``;
 
 const StyledToggleBtn = styled.button`
   position: relative;
-  right: 0;
+
   border: none;
   width: 70px;
   height: 35px;

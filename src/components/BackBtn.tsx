@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledBackBtn = styled.button`
-  left: 0;
+  position: relative;
+
   border: none;
   width: 35px;
   height: 35px;
@@ -19,12 +20,16 @@ const StyledBackBtn = styled.button`
   }
 `;
 
-function BackBtn() {
-  const navigate = useNavigate();
+interface Props {
+  className?: string;
+}
 
+function BackBtn({ className }: Props) {
   return (
-    <StyledBackBtn onClick={() => navigate(-1)}>
-      <span>🔙</span>
+    <StyledBackBtn className={className}>
+      <Link to="/crypto-tracker">
+        <span>◀︎</span>
+      </Link>
     </StyledBackBtn>
   );
 }

@@ -65,10 +65,12 @@ const Header = styled.header`
   align-items: center;
   margin: 15px 0px;
 `;
-
 const Title = styled.h1`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   color: ${(props) => props.theme.accentColor};
-  font-size: 48px;
+  font-size: 10vw;
 `;
 
 const Loading = styled.span`
