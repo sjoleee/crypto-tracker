@@ -50,7 +50,7 @@ const Title = styled.h1`
   left: 50%;
   transform: translateX(-50%);
   color: ${(props) => props.theme.accentColor};
-  font-size: 10vw;
+  font-size: 2rem;
 `;
 
 const Loading = styled.span`

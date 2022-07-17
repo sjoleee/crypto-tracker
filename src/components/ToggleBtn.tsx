@@ -8,8 +8,8 @@ const StyledToggleBtn = styled.button`
   position: relative;
 
   border: none;
-  width: 70px;
-  height: 35px;
+  width: 34px;
+  height: 20px;
   border-radius: 17.5px;
   font-size: 20px;
   padding: 1px;
@@ -20,12 +20,12 @@ const StyledToggleBtn = styled.button`
 
 const Circle = styled.div<{ isDark: boolean }>`
   background-color: ${(props) => props.theme.bgColor};
-  width: 30px;
-  height: 30px;
+  width: 16px;
+  height: 16px;
   border-radius: 15px;
   position: absolute;
   left: 4%;
-  transform: ${({ isDark }) => (isDark ? "translateX(35px)" : null)};
+  transform: ${({ isDark }) => (isDark ? "translateX(16px)" : null)};
   transition: ${({ isDark }) =>
     isDark ? "all 0.2s ease-in-out" : "all 0.2s ease-in-out"};
 `;
