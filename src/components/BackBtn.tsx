@@ -11,6 +11,9 @@ const StyledBackBtn = styled.button`
   font-size: 20px;
   opacity: 0.3;
   transition: opacity 0.1s linear;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
   cursor: pointer;
   &:hover {
     opacity: 1;
