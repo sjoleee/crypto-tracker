@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
 import BackBtn from "../components/BackBtn";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -72,13 +74,12 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinsProps {
-  themeToggle: () => void;
-}
+interface ICoinsProps {}
 
-function Coins({ themeToggle }: ICoinsProps) {
+function Coins({}: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <>
       <Container>
@@ -88,7 +89,7 @@ function Coins({ themeToggle }: ICoinsProps) {
         <Header>
           <BackBtn />
           <Title>코인</Title>
-          <button onClick={themeToggle}>asdf</button>
+          <button onClick={toggleDarkAtom}>asdf</button>
         </Header>
         {isLoading ? (
           <Loading>Loading...</Loading>

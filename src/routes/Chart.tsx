@@ -1,7 +1,9 @@
 import ApexChart from "react-apexcharts";
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { fetchCoinHistory } from "../api";
+import { isDarkAtom } from "../atoms";
 
 interface HistoryData {
   time_open: number;
@@ -18,7 +20,6 @@ interface HistoryData {
 interface ChartProps {
   coinId?: string;
   name?: string;
-  isDark: boolean;
 }
 
 const Oops = styled.span`
@@ -42,14 +43,13 @@ const Loading = styled.span`
   font-size: 50px;
 `;
 
-function Chart({ coinId, name, isDark }: ChartProps) {
+function Chart({ coinId, name }: ChartProps) {
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data, isError, error } = useQuery<HistoryData[]>(
     ["history", coinId],
     () => fetchCoinHistory(coinId),
     { refetchInterval: 5000 }
   );
-
-  console.log(error, isError);
 
   return (
     <div>

@@ -17,6 +17,8 @@ import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
 import { propTypes } from "react-bootstrap/esm/Image";
+import { isDarkAtom } from "../atoms";
+import { useSetRecoilState } from "recoil";
 
 const Tab = styled.div<{ isActive: boolean }>`
   width: 100%;
@@ -170,12 +172,9 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {
-  themeToggle: () => void;
-  isDark: boolean;
-}
+interface ICoinProps {}
 
-function Coin({ themeToggle, isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationParams;
   const priceMatch = useMatch("/crypto-tracker/:coinId/price");
@@ -192,7 +191,8 @@ function Coin({ themeToggle, isDark }: ICoinProps) {
     { refetchInterval: 5000 }
   );
   const loading = infoLoading || priceLoading;
-
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <>
       <Container>
@@ -206,7 +206,7 @@ function Coin({ themeToggle, isDark }: ICoinProps) {
           <Title>
             {state ? state : loading ? "Loading..." : infoData?.name}
           </Title>
-          <button onClick={themeToggle}>asdf</button>
+          <button onClick={toggleDarkAtom}>asdf</button>
         </Header>
 
         {loading ? (
@@ -252,13 +252,7 @@ function Coin({ themeToggle, isDark }: ICoinProps) {
               <Route path={`price`} element={<Price />}></Route>
               <Route
                 path={`chart`}
-                element={
-                  <Chart
-                    isDark={isDark}
-                    coinId={coinId}
-                    name={infoData?.name}
-                  />
-                }
+                element={<Chart coinId={coinId} name={infoData?.name} />}
               ></Route>
             </Routes>
           </>
