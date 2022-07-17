@@ -65,12 +65,12 @@ const Header = styled.header`
   align-items: center;
   margin: 15px 0px;
 `;
-const Title = styled.h1`
+const Title = styled.h1<{ titleNameLength: any }>`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   color: ${(props) => props.theme.accentColor};
-  font-size: 2rem;
+  font-size: ${(props) => (props.titleNameLength > 10 ? "1.5rem" : "2rem")};
   width: fit-content;
 `;
 
@@ -176,9 +176,7 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {}
-
-function Coin({}: ICoinProps) {
+function Coin() {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationParams;
   const priceMatch = useMatch("/crypto-tracker/:coinId/price");
@@ -197,6 +195,9 @@ function Coin({}: ICoinProps) {
   const loading = infoLoading || priceLoading;
   const setDarkAtom = useSetRecoilState(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  const titleName = infoData?.name;
+  const titleNameLength = titleName?.length;
+  console.log(titleNameLength);
   return (
     <>
       <Container>
@@ -207,7 +208,7 @@ function Coin({}: ICoinProps) {
         </Helmet>
         <Header>
           <BackBtn />
-          <Title>
+          <Title titleNameLength={titleNameLength}>
             {state ? state : loading ? "Loading..." : infoData?.name}
           </Title>
           <ToggleBtn />
