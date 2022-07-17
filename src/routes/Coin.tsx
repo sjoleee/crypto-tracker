@@ -19,6 +19,7 @@ import Price from "./Price";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { isDarkAtom } from "../atoms";
 import { useSetRecoilState } from "recoil";
+import ToggleBtn from "../components/ToggleBtn";
 
 const Tab = styled.div<{ isActive: boolean }>`
   width: 100%;
@@ -60,7 +61,7 @@ const Header = styled.header`
   position: relative;
   height: 10vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin: 15px 0px;
 `;
@@ -206,7 +207,7 @@ function Coin({}: ICoinProps) {
           <Title>
             {state ? state : loading ? "Loading..." : infoData?.name}
           </Title>
-          <button onClick={toggleDarkAtom}>asdf</button>
+          <ToggleBtn />
         </Header>
 
         {loading ? (

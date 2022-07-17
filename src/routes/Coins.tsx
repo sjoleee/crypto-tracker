@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import BackBtn from "../components/BackBtn";
 import { useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
+import ToggleBtn from "../components/ToggleBtn";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -19,7 +20,7 @@ const Header = styled.header`
   position: relative;
   height: 10vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin: 15px 0px;
 `;
@@ -89,7 +90,7 @@ function Coins({}: ICoinsProps) {
         <Header>
           <BackBtn />
           <Title>코인</Title>
-          <button onClick={toggleDarkAtom}>asdf</button>
+          <ToggleBtn />
         </Header>
         {isLoading ? (
           <Loading>Loading...</Loading>
