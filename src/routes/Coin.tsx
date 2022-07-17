@@ -250,7 +250,10 @@ function Coin({}: ICoinProps) {
               </Tab>
             </TabWrapper>
             <Routes>
-              <Route path={`price`} element={<Price />}></Route>
+              <Route
+                path={`price`}
+                element={<Price coinId={coinId} name={infoData?.name} />}
+              ></Route>
               <Route
                 path={`chart`}
                 element={<Chart coinId={coinId} name={infoData?.name} />}
