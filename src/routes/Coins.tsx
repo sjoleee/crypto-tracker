@@ -25,13 +25,13 @@ const Header = styled.header`
 const CoinList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
+  background-color: ${(props) => props.theme.cardColor};
   border-radius: 10px;
-  color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
   a {
     padding: 20px;
-    transition: color 0.2s ease-in;
+    transition: color 0.1s ease-in;
     display: flex;
     align-items: center;
   }
@@ -72,7 +72,11 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps {
+  themeToggle: () => void;
+}
+
+function Coins({ themeToggle }: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   return (
@@ -84,6 +88,7 @@ function Coins() {
         <Header>
           <BackBtn />
           <Title>코인</Title>
+          <button onClick={themeToggle}>asdf</button>
         </Header>
         {isLoading ? (
           <Loading>Loading...</Loading>

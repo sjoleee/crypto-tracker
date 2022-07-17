@@ -18,6 +18,7 @@ interface HistoryData {
 interface ChartProps {
   coinId?: string;
   name?: string;
+  isDark: boolean;
 }
 
 const Oops = styled.span`
@@ -41,7 +42,7 @@ const Loading = styled.span`
   font-size: 50px;
 `;
 
-function Chart({ coinId, name }: ChartProps) {
+function Chart({ coinId, name, isDark }: ChartProps) {
   const { isLoading, data, isError, error } = useQuery<HistoryData[]>(
     ["history", coinId],
     () => fetchCoinHistory(coinId),
@@ -75,7 +76,7 @@ function Chart({ coinId, name }: ChartProps) {
               curve: "smooth",
             },
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             xaxis: {
               categories: data?.map((item) => {

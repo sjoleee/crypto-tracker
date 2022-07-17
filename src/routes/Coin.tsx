@@ -16,18 +16,19 @@ import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
+import { propTypes } from "react-bootstrap/esm/Image";
 
 const Tab = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 40px;
-  background-color: ${(props) => (props.isActive ? "#0000001d" : "#00000050")};
+  background-color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.cardColor};
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 15px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   a {
     display: block;
     width: 100%;
@@ -80,7 +81,7 @@ const Overview = styled.div<{ bgColor: string }>`
   display: flex;
   justify-content: center;
   border-radius: 15px;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.theme.cardColor};
   margin-bottom: 30px;
 `;
 
@@ -106,7 +107,7 @@ const OverviewItem = styled.div`
 const Description = styled.p`
   margin: 20px 0px;
   border-radius: 15px;
-  background-color: #00000050;
+  background-color: ${(props) => props.theme.cardColor};
   padding: 20px;
 `;
 
@@ -169,7 +170,12 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  themeToggle: () => void;
+  isDark: boolean;
+}
+
+function Coin({ themeToggle, isDark }: ICoinProps) {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationParams;
   const priceMatch = useMatch("/crypto-tracker/:coinId/price");
@@ -200,13 +206,14 @@ function Coin() {
           <Title>
             {state ? state : loading ? "Loading..." : infoData?.name}
           </Title>
+          <button onClick={themeToggle}>asdf</button>
         </Header>
 
         {loading ? (
           <Loading>Loading...</Loading>
         ) : (
           <>
-            <Overview bgColor="#00000050">
+            <Overview bgColor="#00cecb7d">
               <OverviewItem>
                 <span>Rank</span>
                 <DivisionLine />
@@ -245,7 +252,13 @@ function Coin() {
               <Route path={`price`} element={<Price />}></Route>
               <Route
                 path={`chart`}
-                element={<Chart coinId={coinId} name={infoData?.name} />}
+                element={
+                  <Chart
+                    isDark={isDark}
+                    coinId={coinId}
+                    name={infoData?.name}
+                  />
+                }
               ></Route>
             </Routes>
           </>
