@@ -255,11 +255,11 @@ function Coin() {
             </TabWrapper>
             <Routes>
               <Route
-                path={`price`}
+                path={"price"}
                 element={<Price coinId={coinId} name={infoData?.name} />}
               ></Route>
               <Route
-                path={`chart`}
+                path={"chart"}
                 element={<Chart coinId={coinId} name={infoData?.name} />}
               ></Route>
             </Routes>

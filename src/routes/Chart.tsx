@@ -14,7 +14,7 @@ interface HistoryData {
   close: string;
   volume: string;
   market_cap: number;
-  error?: string;
+  error: string;
 }
 
 interface ChartProps {
@@ -45,7 +45,7 @@ const Loading = styled.span`
 
 function Chart({ coinId, name }: ChartProps) {
   const isDark = useRecoilValue(isDarkAtom);
-  const { isLoading, data, isError, error } = useQuery<HistoryData[]>(
+  const { isLoading, data } = useQuery<HistoryData[]>(
     ["history", coinId],
     () => fetchCoinHistory(coinId),
     { refetchInterval: 5000 }
